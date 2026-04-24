@@ -1,0 +1,3 @@
+package tn.fss
+
+const val SERVER_PORT = 8080
