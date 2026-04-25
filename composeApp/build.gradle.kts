@@ -16,7 +16,7 @@ kotlin {
             jvmTarget.set(JvmTarget.JVM_11)
         }
     }
-    
+
     listOf(
         iosArm64(),
         iosSimulatorArm64()
@@ -56,9 +56,7 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtimeCompose)
             implementation(projects.shared)
         }
-        commonTest.dependencies {
-            implementation(libs.kotlin.test)
-        }
+
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutinesSwing)
@@ -95,6 +93,18 @@ android {
 
 dependencies {
     debugImplementation(libs.compose.uiTooling)
+}
+
+compose {
+    resources {
+        packageOfResClass = "tn.fss"
+        publicResClass = true
+    }
+}
+
+// Skip syncComposeResourcesForIos when run outside Xcode
+tasks.matching { it.name == "syncComposeResourcesForIos" }.configureEach {
+    onlyIf { System.getenv("ARCHS") != null }
 }
 
 compose.desktop {
