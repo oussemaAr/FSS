@@ -15,54 +15,61 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.screen.Screen
 import org.jetbrains.compose.resources.painterResource
 import tn.fss.Res
 import tn.fss.composables.TeamModel
 import tn.fss.composables.TeamView
 import tn.fss.refresh
 
-@Composable
-fun ScoreScreen() {
-    val teamAScore = remember { mutableIntStateOf(0) }
-    val teamBScore = remember { mutableIntStateOf(0) }
-    Box {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceEvenly
-        ) {
-            TeamView(
-                team = TeamModel(
-                    name = "Team A",
-                    score = teamAScore.value,
-                    color = Color.Cyan,
-                ),
-                modifier = Modifier.clickable {
-                    teamAScore.value += 1
-                })
-            TeamView(
-                team = TeamModel(
-                    name = "TeamB",
-                    score = teamBScore.value,
-                    color = Color.DarkGray,
-                ),
-                modifier = Modifier.clickable {
-                    teamBScore.value += 1
-                })
-        }
-        Image(
-            painterResource(
-                Res.drawable.refresh
-            ),
-            modifier = Modifier.align(Alignment.Center)
-                .size(48.dp)
-                .clickable {
-                    teamAScore.value = 0
-                    teamBScore.value = 0
-                },
-            colorFilter = ColorFilter.tint(Color.White),
-            contentDescription = ""
-        )
 
+class ScoreScreen(
+    val teamNames: TeamNamesModel,
+) : Screen {
+
+    @Composable
+    override fun Content() {
+        val teamAScore = remember { mutableIntStateOf(0) }
+        val teamBScore = remember { mutableIntStateOf(0) }
+        Box {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.SpaceEvenly
+            ) {
+                TeamView(
+                    team = TeamModel(
+                        name = teamNames.teamNameOne,
+                        score = teamAScore.value,
+                        color = Color.Cyan,
+                    ),
+                    modifier = Modifier.clickable {
+                        teamAScore.value += 1
+                    })
+                TeamView(
+                    team = TeamModel(
+                        name = teamNames.teamNameTwo,
+                        score = teamBScore.value,
+                        color = Color.DarkGray,
+                    ),
+                    modifier = Modifier.clickable {
+                        teamBScore.value += 1
+                    })
+            }
+            Image(
+                painterResource(
+                    Res.drawable.refresh
+                ),
+                modifier = Modifier.align(Alignment.Center)
+                    .size(48.dp)
+                    .clickable {
+                        teamAScore.value = 0
+                        teamBScore.value = 0
+                    },
+                colorFilter = ColorFilter.tint(Color.White),
+                contentDescription = ""
+            )
+
+        }
     }
 }
